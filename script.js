@@ -102,7 +102,7 @@ function createRocks() {
     }
 }
 
-function movingCactus() {
+function moveCactus() {
     if (cactus.x < 50 + cactus.width / 2) {
         clearDraw(cactus);
         ctx.beginPath();
@@ -130,28 +130,37 @@ function stopGame() {
     clearInterval(dinoTimeOut);
     ctx.fillText("GAME OVER!", canvas.width / 2 - 50 , canvas.height / 2 - 50)
 }
-
-window.addEventListener("load", (e) => {
-    drawImg(dinosaurImg, dinosaur);
-    ctx.fillRect(50, 250, 100, 2);
-});
-
-window.addEventListener("keydown", (e) => {
-    if (e.code == "Space" && gameStart == false) {
-        gameStart = true;
-        gameStatus = true;
-        gameScore();
+function gameLoad() {
+    window.addEventListener("load", (e) => {
         drawImg(dinosaurImg, dinosaur);
-        drawImg(cactusImg, cactus);
-        drawField();
-        createRocks();
-        timerCactus = setInterval(movingCactus, 50);
-    }
-});
+        ctx.fillRect(50, 250, 100, 2);
+    });
+}
 
-window.addEventListener("keydown", (e) => {
-    if (e.code == "Space" && gameStatus == true) {
-        dinosaurUp();
-        dinoTimeOut = setTimeout(dinosaurDown, 1500);
-    }
-});
+function startGame() {
+    window.addEventListener("keydown", (e) => {
+        if (e.code == "Space" && gameStart == false) {
+            gameStart = true;
+            gameStatus = true;
+            gameScore();
+            drawImg(dinosaurImg, dinosaur);
+            drawImg(cactusImg, cactus);
+            drawField();
+            createRocks();
+            timerCactus = setInterval(moveCactus, 50);
+        }
+    });
+}
+
+function dinoJump() {
+    window.addEventListener("keydown", (e) => {
+        if (e.code == "Space" && gameStatus == true) {
+            dinosaurUp();
+            dinoTimeOut = setTimeout(dinosaurDown, 1500);
+        }
+    });
+}
+
+gameLoad();
+startGame();
+dinoJump();
